@@ -54,9 +54,9 @@ if (message.content.startsWith("ban")) {
     var mention = message.mentions.members.first();
     if(!mention) return message.channel.send("يجب منشن العضو");
 
-    mention.ban("By: " + message.author.tag);
+    mention.ban();
     
-    message.channel.send("تم أعطاء باند الى : " + mention.tag);
+    message.channel.send("تم أعطاء باند الى : " + mention.user.username);
 };
 });
 client.login(process.env.BOT_TOKEN);
