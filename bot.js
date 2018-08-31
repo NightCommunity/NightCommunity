@@ -124,7 +124,7 @@ if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply('لي�
 
 });
 {
-  "name": "*mute",
+  "name": "mute",
   "permissions": "MUTE_MEMBERS",
   "restriction": "1",
   "actions": [
