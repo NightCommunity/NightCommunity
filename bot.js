@@ -119,56 +119,21 @@ if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply('لي�
                message.reply("تم فتح الشات:white_check_mark:")
            });
              }
-
-
-
-});
-const d = require("discord.js");
-const client = new d.Client();
-var prefix ="*"//:3 غيره بكيفك
-const fs = require("fs");
-var json = JSON.parse(fs.readFileSync("json.json", "utf8"));
-
-client.on("message", (message) => {
-    var command = message.content.split(" ")[0];
-    if (message.content.startsWith(prefix)) return;
-    switch(command) {
-        case "mute" : 
-        if (!message.channel.type =="text") return;
-        if (!message.member.hasPermission("MANAGE_CHANNELS")) return;
-        if (!message.mentions.members.first()) return;
-        message.channel.overwritePermissions(message.mentions.members.first().id,{
-            SEND_MESSAGES : false
-        });
-        json[message.guild.id + message.mentions.members.first()] = {muted : true};
-        fs.writeFile("json.json", JSON.stringify(json), err => {
-            if (err) console.error(err);
-        });
-        message.channel.send("Muted.");
-        break;
-        case "unmute" : 
-        if (!message.channel.type =="text") return;
-        if (!message.member.hasPermission("MANAGE_CHANNELS")) return;
-        if (!message.mentions.members.first()) return;
-        message.channel.overwritePermissions(message.mentions.members.first().id,{
-            SEND_MESSAGES : true
-        });
-        json[message.guild.id + message.mentions.members.first()] = {muted : false};
-        fs.writeFile("json.json", JSON.stringify(json), err => {
-            if (err) console.error(err);
-        });
-        message.channel.send("Unmuted.");
+  client.on('message', msg => { 
+    if (msg.content.startsWith(`*warn`)) {
+      if(!msg.member.hasPermission("MANAGE_MESSAGES")) return;
+       let args = msg.content.split(" ").slice(1);
+      if (!msg.mentions.members.first()) return msg.reply('منشن الشخص المحدد')
+      if (!args[0]) return msg.reply('اكتب السبب')
+      //غير اسم الروم او سوي روم بذا الاسم 
+      if (msg.guild.channels.find('name', 'warns')) {
+        //اذا غيرت فوق غير هنا كمان 
+        msg.guild.channels.find('name', 'warns').send(`
+      تم اعطائك انذار : ${msg.mentions.members.first()}
+      لأنك قمت بما يلي
+      ${args.join(" ").split(msg.mentions.members.first()).slice(' ')}
+      `)
+      }
     }
-});
-client.on("guildMemberAdd", (member) => {
-    if (json[member.guild.id + member.user.id]) {
-        if (json[member.guild.id].muted == true) {
-            member.guild.channels.forEach(c => {
-                c.overwritePermissions(member.id, {
-                    SEND_MESSAGES : false
-                });
-            })
-        };
-    };
-});
+})
 client.login(process.env.BOT_TOKEN);
