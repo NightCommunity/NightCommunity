@@ -50,7 +50,7 @@ return;
     }
 });
 client.on('message', message => {
-if (message.content.startsWith("ban")) {
+if (message.content.startsWith("*ban")) {
     var mention = message.mentions.members.first();
     if (!message.member.hasPermission("BAN_MEMBERS")) return;
     if(!mention) return message.channel.send("يجب منشن العضو");
@@ -58,6 +58,17 @@ if (message.content.startsWith("ban")) {
     mention.ban();
     
     message.channel.send("تم أعطاء باند الى : " + mention.user.username);
+};
+});
+client.on('message', message => {
+if (message.content.startsWith("*kick")) {
+    var mention = message.mentions.members.first();
+    if (!message.member.hasPermission("KICK_MEMBERS")) return;
+    if(!mention) return message.channel.send("يجب منشن العضو");
+
+    mention.kick("By: " + message.author.tag);
+    
+    message.channel.send("تم أعطاء كيك الى : " + mention.user.username);
 };
 });
 client.login(process.env.BOT_TOKEN);
