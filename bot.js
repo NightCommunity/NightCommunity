@@ -52,6 +52,7 @@ return;
 client.on('message', message => {
 if (message.content.startsWith("ban")) {
     var mention = message.mentions.members.first();
+    if (!message.member.hasPermission("BAN_MEMBERS")) return;
     if(!mention) return message.channel.send("يجب منشن العضو");
 
     mention.ban();
