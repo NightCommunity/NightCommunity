@@ -140,4 +140,45 @@ client.on('message', msg => {
       }
     }
 })
+client.on("message", (message) => {
+    var command = message.content.split(" ")[0];
+    if (message.content.startsWith(prefix)) return;
+    switch(command) {
+        case "mute" : 
+        if (!message.channel.type =="text") return;
+        if (!message.member.hasPermission("MANAGE_CHANNELS")) return;
+        if (!message.mentions.members.first()) return;
+        message.channel.overwritePermissions(message.mentions.members.first().id,{
+            SEND_MESSAGES : false
+        });
+        json[message.guild.id + message.mentions.members.first()] = {muted : true};
+        fs.writeFile("json.json", JSON.stringify(json), err => {
+            if (err) console.error(err);
+        });
+        message.channel.send("Muted.");
+        break;
+        case "unmute" : 
+        if (!message.channel.type =="text") return;
+        if (!message.member.hasPermission("MANAGE_CHANNELS")) return;
+        if (!message.mentions.members.first()) return;
+        message.channel.overwritePermissions(message.mentions.members.first().id,{
+            SEND_MESSAGES : true
+        });
+        json[message.guild.id + message.mentions.members.first()] = {muted : false};
+        fs.writeFile("json.json", JSON.stringify(json), err => {
+            if (err) console.error(err);
+        });
+        message.channel.send("Unmuted.");
+    }
+});
+client.on("guildMemberAdd", (member) => {
+    if (json[member.guild.id + member.user.id]) {
+        if (json[member.guild.id].muted == true) {
+            member.guild.channels.forEach(c => {
+                c.overwritePermissions(member.id, {
+                    SEND_MESSAGES : false
+                });
+            })
+        };
+    };
 client.login(process.env.BOT_TOKEN);
