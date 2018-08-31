@@ -96,7 +96,7 @@ client.on('message', msg => {
 });
 client.on('message', message => {
 
-    if (message.content === "*mutechannel") {
+    if (message.content === ".mutechannel") {
                         if(!message.channel.guild) return message.reply(' This command only for servers');
 
 if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply(' ليس لديك صلاحيات');
@@ -108,7 +108,7 @@ if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply(' لي
            });
              }
 //™¦༺♚ƙἶղց|MaS♚༺¦™#7105
-if (message.content === "*unmutechannel") {
+if (message.content === ".unmutechannel") {
     if(!message.channel.guild) return message.reply(' This command only for servers');
 
 if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply('ليس لديك صلاحيات');
@@ -119,7 +119,11 @@ if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply('لي�
                message.reply("تم فتح الشات:white_check_mark:")
            });
              }
-  client.on('message', msg => { 
+
+
+
+});
+client.on('message', msg => { 
     if (msg.content.startsWith(`*warn`)) {
       if(!msg.member.hasPermission("MANAGE_MESSAGES")) return;
        let args = msg.content.split(" ").slice(1);
